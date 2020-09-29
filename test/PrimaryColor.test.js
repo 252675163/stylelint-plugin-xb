@@ -7,7 +7,7 @@ const config = {
   rules: {
     [ruleName]: [
       2,
-      [{hex:'007aff',rgb:'0,122,255',vname:'@primary-color'}]
+      {color:[{hex:'007aff',rgb:'0,122,255',vname:'@primary-color'}]}
     ]
   }
 };
@@ -90,4 +90,16 @@ const config = {
   border-bottom: 1px solid @primary-color;\
   border-top: 1px solid @primary-color;\
 }");
+  });
+
+  it("PrimaryColor/inline", async () => {
+    const  res= await lint({
+      code:`
+      <a style="background: #007aff;border-bottom: 1px solid red;"></a>
+      `,
+      config
+    });
+    const warnings = res.results[0].warnings
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0].text).toBe("系统主题色请不要直接使用，请用添加class或其他方式处理 (xb-style/primary-color)")
   });

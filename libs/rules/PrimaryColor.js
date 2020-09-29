@@ -14,10 +14,10 @@ module.exports = stylelint.createPlugin(ruleName, function (
   context
 ) {
   return function (root, result) {
-    if(!primaryOption||!secondaryOptionObject||secondaryOptionObject.length===0){
+    if(!primaryOption||!secondaryOptionObject||!secondaryOptionObject.color ||secondaryOptionObject.color.length===0){
       return
     }
-    checks = secondaryOptionObject
+    checks = secondaryOptionObject.color
     let invalids = []
     root.walkDecls(decl=>{
       let hexRes =  decl.value.match(hexReg)
@@ -25,7 +25,7 @@ module.exports = stylelint.createPlugin(ruleName, function (
       if(hexRes&&hexRes[1]){
         invalid = checks.forEach(check=>{
           if(check.hex.toLocaleLowerCase()===hexRes[1].toLocaleLowerCase()){
-            invalids.push({message:mutil.messageFormat(ruleName,`颜色请使用变量${check.vname}替换`),index:declarationValueIndex(decl)+hexRes.index,node:decl,correctValue:decl.value.replace(hexReg,check.vname)})
+            invalids.push({vname:check.vname,className:check.className,index:declarationValueIndex(decl)+hexRes.index,node:decl,correctValue:decl.value.replace(hexReg,check.vname)})
           }
         })
       }else if(rgbRes&&rgbRes[1]){
@@ -37,7 +37,7 @@ module.exports = stylelint.createPlugin(ruleName, function (
           })
           
           if(flag){
-            invalids.push({message:mutil.messageFormat(ruleName,`颜色请使用变量${check.vname}替换`),index:declarationValueIndex(decl)+rgbRes.index,node:decl,correctValue:decl.value.replace(rgbReg,check.vname)})
+            invalids.push({vname:check.vname,className:check.className, index:declarationValueIndex(decl)+rgbRes.index,node:decl,correctValue:decl.value.replace(rgbReg,check.vname)})
           }
         })
       }
@@ -45,7 +45,8 @@ module.exports = stylelint.createPlugin(ruleName, function (
     
     
     if(invalids.length>0){
-      if(context.fix){
+      // 如果是行内样式不予以替换，需要手动更改
+      if(context.fix&&!root.document){
         for(let item of invalids){
           item.node.value = item.correctValue
         }
@@ -53,7 +54,7 @@ module.exports = stylelint.createPlugin(ruleName, function (
       }
       invalids.forEach(invalid=>{
         stylelint.utils.report({
-          message: invalid.message,
+          message: !!root.document?mutil.messageFormat(ruleName,`系统主题色请不要直接使用，请用添加class或其他方式处理`) :mutil.messageFormat(ruleName,`系统主题色请不要直接使用,请使用变量${invalid.vname}替换`) ,
 					node: invalid.node,
 					index: invalid.index,
 					result,
