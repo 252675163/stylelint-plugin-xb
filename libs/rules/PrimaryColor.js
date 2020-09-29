@@ -25,7 +25,12 @@ module.exports = stylelint.createPlugin(ruleName, function (
       if(hexRes&&hexRes[1]){
         invalid = checks.forEach(check=>{
           if(check.hex.toLocaleLowerCase()===hexRes[1].toLocaleLowerCase()){
-            invalids.push({vname:check.vname,className:check.className,index:declarationValueIndex(decl)+hexRes.index,node:decl,correctValue:decl.value.replace(hexReg,check.vname)})
+            invalids.push({
+              vname:check.vname,
+              className:check.className,
+              index:declarationValueIndex(decl)+hexRes.index,
+              node:decl,
+              correctValue:decl.value.replace(hexReg,check.vname)})
           }
         })
       }else if(rgbRes&&rgbRes[1]){
@@ -37,7 +42,11 @@ module.exports = stylelint.createPlugin(ruleName, function (
           })
           
           if(flag){
-            invalids.push({vname:check.vname,className:check.className, index:declarationValueIndex(decl)+rgbRes.index,node:decl,correctValue:decl.value.replace(rgbReg,check.vname)})
+            invalids.push({
+              vname:check.vname,className:check.className, 
+              index:declarationValueIndex(decl)+rgbRes.index,
+              node:decl,
+              correctValue:decl.value.replace(rgbReg,check.vname)})
           }
         })
       }
@@ -46,7 +55,7 @@ module.exports = stylelint.createPlugin(ruleName, function (
     
     if(invalids.length>0){
       // 如果是行内样式不予以替换，需要手动更改
-      if(context.fix&&!root.document){
+      if(context.fix&&!root.source.inline){
         for(let item of invalids){
           item.node.value = item.correctValue
         }
@@ -54,8 +63,8 @@ module.exports = stylelint.createPlugin(ruleName, function (
       }
       invalids.forEach(invalid=>{
         stylelint.utils.report({
-          message: !!root.document?mutil.messageFormat(ruleName,`系统主题色请不要直接使用，请用添加class或其他方式处理`) :mutil.messageFormat(ruleName,`系统主题色请不要直接使用,请使用变量${invalid.vname}替换`) ,
-					node: invalid.node,
+          message: root.source.inline?mutil.messageFormat(ruleName,`系统主题色请不要直接使用，请用添加class或其他方式处理`) :mutil.messageFormat(ruleName,`系统主题色请不要直接使用,请使用变量${invalid.vname}替换`) ,
+          node: invalid.node,
 					index: invalid.index,
 					result,
 					ruleName,

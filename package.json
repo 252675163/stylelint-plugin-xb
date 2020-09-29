@@ -3,7 +3,7 @@
   "dependencies": {
     "stylelint": "^13.6.1"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
     "jest": "^26.4.2",
     "jest-preset-stylelint": "^3.0.0"

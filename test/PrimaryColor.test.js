@@ -31,7 +31,7 @@ const config = {
     expect(warnings[1].line).toBe(4);
     expect(warnings[2].line).toBe(5);
     expect(warnings[3].line).toBe(6);
-    expect(warnings[0].text).toBe('颜色请使用变量@primary-color替换 (xb-style/primary-color)');
+    expect(warnings[0].text).toBe('系统主题色请不要直接使用,请使用变量@primary-color替换 (xb-style/primary-color)');
   });
   it("PrimaryColor/RGBErr", async () => {
     const  res= await lint({
@@ -52,7 +52,7 @@ const config = {
     expect(warnings[1].line).toBe(4);
     expect(warnings[2].line).toBe(5);
     expect(warnings[3].line).toBe(6);
-    expect(warnings[0].text).toBe('颜色请使用变量@primary-color替换 (xb-style/primary-color)');
+    expect(warnings[0].text).toBe('系统主题色请不要直接使用,请使用变量@primary-color替换 (xb-style/primary-color)');
   });
   it("PrimaryColor/correctValue", async () => {
     const  res= await lint({
