@@ -1,2 +1,3 @@
 const PrimaryColor = require('./libs/rules/PrimaryColor')
-module.exports = [PrimaryColor,]
+const SafeAreaVariable = require('./libs/rules/SafeAreaVariable')
+module.exports = [PrimaryColor,SafeAreaVariable]

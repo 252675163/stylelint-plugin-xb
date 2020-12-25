@@ -75,7 +75,7 @@ const config = {
     const  res= await lint({
       code:"\
 .test {\
-  color: rgba(0,122,255,.2);\
+  color: rgba(0, 122,255,.2);\
   background: rgb(0,122,255);\
   border-bottom: 1px solid #007aff;\
   border-top: 1px solid #007AfF;\

@@ -7,7 +7,7 @@ const messages = stylelint.utils.ruleMessages(ruleName, {
 });
 const hexReg = /#([0-9A-Za-z]+)/
 let checks = [{hex:'007aff',rgb:'0,122,255',vname:'@primary-color'}]
-const rgbReg = /rgba?\(([\.0-9,]+)\)/i
+const rgbReg = /rgba?\(([\.0-9\s*,]+)\)/i
 module.exports = stylelint.createPlugin(ruleName, function (
   primaryOption,
   secondaryOptionObject,
