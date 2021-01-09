@@ -123,7 +123,7 @@ module.exports = stylelint.createPlugin(ruleName, function (
           let item = obj[propKey]
           for (let dKey in item) {
             let sitme = item[dKey]
-            if (!sitme.type || sitme.type === 'del') {
+            if (sitme.type === 'del') {
               let newValue = ''
               if(context.fix){
                 newValue = dKey==='env'?sitme.value.replace(EnvReg, 'var(--safe-area-inset-$1)') :sitme.value.replace(ConstantReg, 'var(--safe-area-inset-$1)')

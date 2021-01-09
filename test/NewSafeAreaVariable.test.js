@@ -11,6 +11,18 @@ const config = {
   },
   fix:true
 };
+it("SafeAreaVariable/ok", async () => {
+  const  res= await lint({
+    code:`
+    .test {
+      top: calc(100vh - 120px - var(--safe-area-inset-bottom));
+    }
+    `,
+    config
+  });
+  const warnings = res.results[0].warnings
+  expect(warnings.length).toBe(0);
+});
   it("SafeAreaVariable/single1", async () => {
     const  res= await lint({
       code:`
