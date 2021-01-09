@@ -124,9 +124,14 @@ module.exports = stylelint.createPlugin(ruleName, function (
           for (let dKey in item) {
             let sitme = item[dKey]
             if (!sitme.type || sitme.type === 'del') {
+              let newValue = ''
+              if(context.fix){
+                newValue = dKey==='env'?sitme.value.replace(EnvReg, 'var(--safe-area-inset-$1)') :sitme.value.replace(ConstantReg, 'var(--safe-area-inset-$1)')
+                rule.nodes[sitme.index].value = newValue
+              }
               stylelint.utils.report({
                 message: '利用var来代替使用env和constant属性',
-                node: rule.nodes[sitme.index],
+                node:rule.nodes[sitme.index],
                 index:declarationValueIndex(rule.nodes[sitme.index]),
                 result,
                 ruleName,

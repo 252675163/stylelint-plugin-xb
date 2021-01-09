@@ -6,8 +6,7 @@ const config = {
   plugins: ["./index.js"],
   rules: {
     [ruleName]: [
-      2,
-      {}
+      2
     ]
   },
   fix:true
@@ -36,19 +35,19 @@ const config = {
     const warnings = res.results[0].warnings
     expect(warnings[0].text).toBe('利用var来代替使用env和constant属性');
   });
-  // it("SafeAreaVariable/two-err-fix", async () => {
-  //   const  res= await lint({
-  //     code:`
-  //     .test {
-  //       top: constant(safe-area-inset-top);
-  //       top: env(safe-area-inset-top);
-  //     }
-  //     `,
-  //     config,
-  //     fix:true
-  //   });
-  //   expect(res.output).toBe('\n      .test {\n    top: var(--safe-area-inset-top);\n      }\n      ')
-  // });
+  it("SafeAreaVariable/two-err-fix", async () => {
+    const  res= await lint({
+      code:`
+      .test {
+        top: constant(safe-area-inset-top);
+        top: env(safe-area-inset-top);
+      }
+      `,
+      config,
+      fix:true
+    });
+    expect(res.output).toBe('\n      .test {\n        top: var(--safe-area-inset-top);\n        top: var(--safe-area-inset-top);\n      }\n      ')
+  });
   it("SafeAreaVariable/two-err", async () => {
     const  res= await lint({
       code:`
